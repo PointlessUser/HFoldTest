@@ -6,12 +6,29 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    continue-on-error: true
+    # We combine OS and target_platform in a single matrix.
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        include:
+          # ----- Linux builds -----
+          - os: ubuntu-latest
+            target_platform: linux-64
+          - os: ubuntu-latest
+            target_platform: linux-aarch64
+          - os: ubuntu-latest
+            target_platform: linux-ppc64le
+          - os: ubuntu-latest
+            target_platform: linux-s390x
+          - os: ubuntu-latest
+            target_platform: linux-32
 
+          # ----- macOS builds -----
+          - os: macos-latest
+            target_platform: osx-64
+          - os: macos-latest
+            target_platform: osx-arm64
+
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
 
@@ -21,29 +38,40 @@ jobs:
           auto-update-conda: true
           auto-activate-base: false
           miniconda-version: latest
-          # This ensures conda-forge is on top from the start:
           channels: conda-forge
           channel-priority: strict
 
       - name: Install conda-build & anaconda-client
         run: |
-          # On Mac, also install clang_osx-64 to get newer Clang that supports Xcode 15 TAPI.
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            conda install -y conda-build anaconda-client clang_osx-64 clangxx_osx-64
-          else
-            conda install -y conda-build anaconda-client
-          fi
+          conda install -y conda-build anaconda-client
+
+      - name: Install Cross-Compilers (if needed)
+        if: runner.os == 'Linux' && matrix.target_platform != 'linux-64'
+        run: |
+          echo "Installing cross-compiler for ${{ matrix.target_platform }}"
+          # Example: compilers_linux-aarch64, sysroot_linux-aarch64, etc.
+          # Adjust these package names for each platform, as needed.
+          conda install -y \
+            "compilers_${{ matrix.target_platform }}" \
+            "sysroot_${{ matrix.target_platform }}"
+
+      - name: Install Clang on Mac (if needed for Xcode 15)
+        if: runner.os == 'macOS'
+        run: |
+          conda install -y clang_osx-64 clangxx_osx-64
 
       - name: Build Conda Package
         run: |
-          conda build .
+          # conda-build allows you to pass the target_platform as a variant:
+          conda build . --variants "target_platform=${{ matrix.target_platform }}"
 
       - name: Upload Package to Anaconda
-        if: always()  # or only if build is successful
+        if: always()
         env:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
         run: |
-          built_pkg=$(conda build . --output)
+          # Get the conda-build output path for the chosen target_platform:
+          built_pkg=$(conda build . --output --variants "target_platform=${{ matrix.target_platform }}")
           echo "Built package: $built_pkg"
           conda run -n base anaconda -t "$ANACONDA_API_TOKEN" upload \
-            --user yaalshama --label main --force "$built_pkg"
+            --user YOUR_CONDA_USERNAME --label main --force "$built_pkg"
