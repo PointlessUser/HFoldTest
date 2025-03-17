@@ -17,6 +17,7 @@ jobs:
         with:
           auto-update-conda: true
           auto-activate-base: false
+          miniconda-version: "latest"
 
       - name: Install conda-build
         run: conda install -y conda-build anaconda
