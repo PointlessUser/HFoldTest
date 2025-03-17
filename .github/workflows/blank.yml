@@ -23,11 +23,11 @@ jobs:
         shell: bash
         run: |
           conda install -y conda-build anaconda-client
-          echo "$(conda info --base)/Scripts" >> $GITHUB_PATH
 
       - name: Build Conda Package
         shell: bash
-        run: conda build .
+        run: |
+          conda build .
 
       - name: Upload Package to Anaconda
         env:
@@ -35,4 +35,5 @@ jobs:
         shell: bash
         run: |
           built_pkg=$(conda build . --output)
-          anaconda -t $ANACONDA_API_TOKEN upload --user yaalshama --label main --force $built_pkg
+          echo "Built package: $built_pkg"
+          conda run -n base anaconda -t $ANACONDA_API_TOKEN upload --user yaalshama --label main --force $built_pkg
