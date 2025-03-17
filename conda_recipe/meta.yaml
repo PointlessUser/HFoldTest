@@ -13,6 +13,8 @@ requirements:
     - {{ compiler('cxx') }}
     - make
     - cmake >=3.1
+    - clang
+    - clangxx
   host:
     - libstdcxx-ng    # [linux]
     - libcxx          # [osx]
