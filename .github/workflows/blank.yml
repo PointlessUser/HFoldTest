@@ -20,23 +20,30 @@ jobs:
         with:
           auto-update-conda: true
           auto-activate-base: false
-          miniconda-version: "latest"
+          miniconda-version: latest
+          # This ensures conda-forge is on top from the start:
+          channels: conda-forge
+          channel-priority: strict
 
       - name: Install conda-build & anaconda-client
-        shell: bash
         run: |
-          conda install -y conda-build anaconda-client
+          # On Mac, also install clang_osx-64 to get newer Clang that supports Xcode 15 TAPI.
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            conda install -y conda-build anaconda-client clang_osx-64 clangxx_osx-64
+          else
+            conda install -y conda-build anaconda-client
+          fi
 
       - name: Build Conda Package
-        shell: bash
         run: |
           conda build .
 
       - name: Upload Package to Anaconda
+        if: always()  # or only if build is successful
         env:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
-        shell: bash
         run: |
           built_pkg=$(conda build . --output)
           echo "Built package: $built_pkg"
-          conda run -n base anaconda -t $ANACONDA_API_TOKEN upload --user yaalshama --label main --force $built_pkg
+          conda run -n base anaconda -t "$ANACONDA_API_TOKEN" upload \
+            --user yaalshama --label main --force "$built_pkg"
