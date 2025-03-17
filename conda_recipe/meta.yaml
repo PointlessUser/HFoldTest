@@ -1,6 +1,6 @@
 package:
   name: hfold
-  version: "1.0.3"
+  version: "1.0.4"
 
 source:
   path: ..
@@ -9,8 +9,8 @@ source:
 
 build:
   script_env:
-    - MACOSX_DEPLOYMENT_TARGET=11.0   # [osx]
-    - CMAKE_OSX_ARCHITECTURES="x86_64;arm64"   # [osx]
+    - 'MACOSX_DEPLOYMENT_TARGET=11.0'   # [osx]
+    - 'CMAKE_OSX_ARCHITECTURES="x86_64;arm64"'   # [osx]
 
 
 
