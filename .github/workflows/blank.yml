@@ -1,6 +1,8 @@
 name: Conda Build & Upload
 
-on: [push, pull_request]
+on:
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -8,7 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        architecture: [x64, ARM64]  # Add both x64 and ARM64 architectures
+        architecture: [x64, ARM64]
 
     steps:
       - uses: actions/checkout@v3
