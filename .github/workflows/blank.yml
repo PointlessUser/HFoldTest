@@ -6,29 +6,13 @@ on:
 
 jobs:
   build:
-    # We combine OS and target_platform in a single matrix.
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
     strategy:
       matrix:
-        include:
-          # ----- Linux builds -----
-          - os: ubuntu-latest
-            target_platform: linux-64
-          - os: ubuntu-latest
-            target_platform: linux-aarch64
-          - os: ubuntu-latest
-            target_platform: linux-ppc64le
-          - os: ubuntu-latest
-            target_platform: linux-s390x
-          - os: ubuntu-latest
-            target_platform: linux-32
+        os: [ubuntu-latest, macos-latest]
+        target_platform: [linux-64, linux-aarch64, linux-s390x, linux-ppc64le, linux-32, osx-64, osx-arm64]
 
-          # ----- macOS builds -----
-          - os: macos-latest
-            target_platform: osx-64
-          - os: macos-latest
-            target_platform: osx-arm64
-
-    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
 
@@ -49,8 +33,6 @@ jobs:
         if: runner.os == 'Linux' && matrix.target_platform != 'linux-64'
         run: |
           echo "Installing cross-compiler for ${{ matrix.target_platform }}"
-          # Example: compilers_linux-aarch64, sysroot_linux-aarch64, etc.
-          # Adjust these package names for each platform, as needed.
           conda install -y \
             "compilers_${{ matrix.target_platform }}" \
             "sysroot_${{ matrix.target_platform }}"
@@ -62,16 +44,16 @@ jobs:
 
       - name: Build Conda Package
         run: |
-          # conda-build allows you to pass the target_platform as a variant:
-          conda build . --variants "target_platform=${{ matrix.target_platform }}"
+          # Provide a YAML/JSON dictionary to --variants
+          conda build . --variants "{\"target_platform\": \"${{ matrix.target_platform }}\"}"
 
       - name: Upload Package to Anaconda
         if: always()
         env:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
         run: |
-          # Get the conda-build output path for the chosen target_platform:
-          built_pkg=$(conda build . --output --variants "target_platform=${{ matrix.target_platform }}")
+          # Similarly for the --output command
+          built_pkg=$(conda build . --output --variants "{\"target_platform\": \"${{ matrix.target_platform }}\"}")
           echo "Built package: $built_pkg"
           conda run -n base anaconda -t "$ANACONDA_API_TOKEN" upload \
-            --user YOUR_CONDA_USERNAME --label main --force "$built_pkg"
+            --user yaalshama --label main --force "$built_pkg"
