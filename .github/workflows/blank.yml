@@ -21,8 +21,7 @@ jobs:
           auto-update-conda: true
           auto-activate-base: false
           miniconda-version: latest
-          # This ensures conda-forge is on top from the start:
-          channels: conda-forge
+          channels: conda-forge,defaults
           channel-priority: strict
 
       - name: Install conda-build & anaconda-client
