@@ -38,7 +38,7 @@ jobs:
           conda build .
 
       - name: Upload Package to Anaconda
-        if: always()  # or only if build is successful
+        if: success()  # or only if build is successful
         env:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
         run: |
