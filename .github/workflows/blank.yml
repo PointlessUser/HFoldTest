@@ -36,6 +36,9 @@ jobs:
           
           # A label/tag for your package in that channel (e.g. "main", "dev", etc.)
           anaconda-org-label: main
+
+          # Where the recipe is located
+          conda-build-path: conda_recipe
           
           # Make sure to store this token in your GitHub Secrets!
           anaconda-org-token: ${{ secrets.ANACONDA_API_TOKEN }}
