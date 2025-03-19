@@ -12,8 +12,6 @@ jobs:
         include:
         - os: ubuntu-latest
           conda_subdir: linux-32
-        - os: macos-latest
-          conda_subdir: osx-arm64
 
     steps:
       - uses: actions/checkout@v3
