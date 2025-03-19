@@ -1,14 +1,11 @@
-{% set raw_tag = environ.get('GITHUB_REF_NAME') %}
-{% set version = raw_tag.lstrip('v') %}
-
 package:
   name: hfold
-  version: "{{ version }}"
+  version: "1.1.0"
 
 source:
-  # path: ..
-  git_url: https://github.com/HosnaJabbari/HFoldTest.git
-  git_rev: "{{ raw_tag }}"
+  path: ..
+  #git_url: https://github.com/HosnaJabbari/HFoldTest.git
+  #git_rev: "{{ raw_tag }}"
 
 build:
   number: 0
