@@ -41,14 +41,15 @@ jobs:
       - name: Build Conda Package
         shell: bash
         run: |
-          run: |
-          # If conda_subdir is non-empty (i.e. on macOS), set it so we can build osx-64 or osx-arm64.
+          # If conda_subdir is set (non-empty), configure subdir
           if [[ -n "${{ matrix.conda_subdir }}" ]]; then
             conda config --env --set subdir "${{ matrix.conda_subdir }}"
+            echo "Building for CONDA_SUBDIR=${{ matrix.conda_subdir }}"
+          else
+            echo "Building for default CONDA_SUBDIR"
           fi
-
-          echo "Building for CONDA_SUBDIR=${{ matrix.conda_subdir:-default}}"
           conda build .
+
 
 
       - name: Upload Package to Anaconda
