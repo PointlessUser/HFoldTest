@@ -41,7 +41,7 @@ jobs:
           conda-build-path: conda_recipe
 
           # Tell conda-build to place its "work" folder outside the repo:
-          conda-build-arguments: "--croot /tmp/conda-build"
+          conda-build-arguments: "--croot /tmp/conda-build --output-folder ./pkgs"
           
           # Make sure to store this token in your GitHub Secrets!
           anaconda-org-token: ${{ secrets.ANACONDA_API_TOKEN }}
