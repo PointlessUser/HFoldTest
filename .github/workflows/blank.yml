@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+#https://github.com/conda/actions/blob/main/canary-release/action.yml
       - name: Build & Upload Conda Package
         uses: conda/actions/canary-release@a46e86a61fbca7dec20c0df4c6b95ce3b4ea2263
         with:
@@ -39,6 +39,9 @@ jobs:
 
           # Where the recipe is located
           conda-build-path: conda_recipe
+
+          # Tell conda-build to place its "work" folder outside the repo:
+          conda-build-args: "--croot /tmp/conda-build"
           
           # Make sure to store this token in your GitHub Secrets!
           anaconda-org-token: ${{ secrets.ANACONDA_API_TOKEN }}
