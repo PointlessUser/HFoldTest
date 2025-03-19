@@ -10,7 +10,11 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        os: [macos-14]
+        include:
+        - os: ubuntu-latest
+          conda_subdir: linux-32
+        - os: macos-latest
+          conda_subdir: osx-arm64
 
     steps:
       - uses: actions/checkout@v3
