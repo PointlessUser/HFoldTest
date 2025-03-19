@@ -1,11 +1,13 @@
+{% set version = environ.get('GITHUB_REF_NAME').lstrip('v') %}
+
 package:
   name: hfold
-  version: "1.0.9"
+  version: "{{ version }}"
 
 source:
-  path: ..
-  # git_url: https://github.com/HosnaJabbari/HFold.git
-  # git_rev: (latest tag)
+  # path: ..
+  git_url: https://github.com/HosnaJabbari/HFold.git
+  git_rev: "{{ version }}"
 
 build:
   number: 0
