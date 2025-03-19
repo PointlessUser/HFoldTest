@@ -7,7 +7,6 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    continue-on-error: true
     strategy:
       matrix:
         include:
@@ -48,7 +47,7 @@ jobs:
           else
             echo "Building for default CONDA_SUBDIR"
           fi
-          conda build .
+          conda build . --debug --verbose
 
 
 
