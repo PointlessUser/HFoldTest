@@ -9,55 +9,35 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-14]  # Explicit ARM64 macOS runner
+        include:
+          - os: ubuntu-latest
+            subdir: linux-64
+          - os: macos-latest
+            subdir: osx-arm64
+          - os: macos-13
+            subdir: osx-64
+          - os: windows-latest
+            subdir: win-64
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Set up ARM64 Miniconda
-        uses: conda-incubator/setup-miniconda@v2
+      - name: Build & Upload Conda Package
+        uses: conda/actions/canary-release@a46e86a61fbca7dec20c0df4c6b95ce3b4ea2263
         with:
-          auto-update-conda: true
-          auto-activate-base: false
-          miniconda-version: latest
-          architecture: arm64  # Force ARM64 installation
-          channels: conda-forge,defaults
-          channel-priority: strict
-          python-version: "3.12"
-
-      - name: Configure ARM64 environment
-        if: runner.os == 'macOS'
-        run: |
-          echo "CONDA_SUBDIR=osx-arm64" >> $GITHUB_ENV
-          conda config --set subdir osx-arm64
-
-      - name: Install ARM64 dependencies
-        if: runner.os == 'macOS'
-        run: |
-          conda install -y -c conda-forge \
-            conda-build \
-            anaconda-client \
-            clang_osx-arm64 \
-            clangxx_osx-arm64 \
-            libffi=3.4.4 \
-            ctypes
-          sudo xcode-select --switch /Applications/Xcode_15.2.app/Contents/Developer
-          export SDKROOT=/Applications/Xcode_15.2.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-
-      - name: Install Linux dependencies
-        if: runner.os == 'Linux'
-        run: |
-          conda install -y conda-build anaconda-client
-
-      - name: Build Conda Package
-        run: |
-          conda clean --all --yes
-          conda build --no-plugins . --override-channels -c conda-forge -c defaults
-
-      - name: Upload Package
-        if: success()
-        env:
-          ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
-        run: |
-          built_pkg=$(conda build . --output)
-          anaconda -t "$ANACONDA_API_TOKEN" upload --user COBRALab --label main --force "$built_pkg"
+          # The name of your conda package; you can hardcode or 
+          # dynamically use the repo name:
+          package-name: ${{ github.event.repository.name }}
+          
+          # Matches the subdir from the matrix above:
+          subdir: ${{ matrix.subdir }}
+          
+          # The Anaconda.org "channel" or "user" you'd like to upload to:
+          anaconda-org-channel: yaalshama
+          
+          # A label/tag for your package in that channel (e.g. "main", "dev", etc.)
+          anaconda-org-label: main
+          
+          # Make sure to store this token in your GitHub Secrets!
+          anaconda-org-token: ${{ secrets.ANACONDA_API_TOKEN }}
