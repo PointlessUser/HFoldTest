@@ -22,26 +22,15 @@ jobs:
         uses: actions/checkout@v3
 #https://github.com/conda/actions/blob/main/canary-release/action.yml
       - name: Build & Upload Conda Package
-        uses: conda/actions/canary-release@a46e86a61fbca7dec20c0df4c6b95ce3b4ea2263
+        uses: conda/actions/canary-release@a46e86a61fbca7dec20c0df4c6b95ce3b4ea2263 # v25.2.0
         with:
-          # The name of your conda package; you can hardcode or 
-          # dynamically use the repo name:
           package-name: ${{ github.event.repository.name }}
-          
-          # Matches the subdir from the matrix above:
           subdir: ${{ matrix.subdir }}
-          
-          # The Anaconda.org "channel" or "user" you'd like to upload to:
           anaconda-org-channel: yaalshama
-          
-          # A label/tag for your package in that channel (e.g. "main", "dev", etc.)
           anaconda-org-label: main
-
-          # Where the recipe is located
-          conda-build-path: conda_recipe
-
-          # Tell conda-build to place its "work" folder outside the repo:
-          conda-build-arguments: "--croot /tmp/conda-build --output-folder ./pkgs"
-          
-          # Make sure to store this token in your GitHub Secrets!
           anaconda-org-token: ${{ secrets.ANACONDA_API_TOKEN }}
+          conda-build-path: conda_recipe
+      
+          # Let Conda build for the correct subdir, do the work in /tmp,
+          # and still place the final packages under ./pkgs/<subdir>/...
+          conda-build-arguments: "--subdir ${{ matrix.subdir }} --croot /tmp/conda-build --output-folder ./pkgs"
