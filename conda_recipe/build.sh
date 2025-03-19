@@ -1,8 +1,15 @@
 #!/bin/bash
-set -ex  # <--- ADD THIS! Enables bash debug + exit on error
+set -ex
 
 mkdir -p build
 cd build
-cmake -DCMAKE_CXX_COMPILER=${CXX} -DCMAKE_C_FLAGS="-DHAVE_STRDUP=1" -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE=ON ..
+
+cmake -DCMAKE_CXX_COMPILER=${CXX} \
+      -DCMAKE_C_FLAGS="-DHAVE_STRDUP=1" \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_VERBOSE_MAKEFILE=ON \
+      -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+      ..
+
 cmake --build . --parallel
-cmake --install . --prefix=${PREFIX}
+cmake --install .
