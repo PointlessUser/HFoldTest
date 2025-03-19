@@ -10,7 +10,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [windows-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -25,6 +25,7 @@ jobs:
           channel-priority: strict
 
       - name: Install conda-build & anaconda-client
+        shell: bash
         run: |
           # On Mac, also install clang_osx-64 to get newer Clang that supports Xcode 15 TAPI.
           if [[ "$RUNNER_OS" == "macOS" ]]; then
@@ -34,6 +35,7 @@ jobs:
           fi
 
       - name: Build Conda Package
+        shell: bash
         run: |
           conda build .
 
@@ -41,6 +43,7 @@ jobs:
         if: success()  # or only if build is successful
         env:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
+        shell: bash
         run: |
           built_pkg=$(conda build . --output)
           echo "Built package: $built_pkg"
