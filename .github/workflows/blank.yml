@@ -39,6 +39,8 @@ jobs:
 
           # Where the recipe is located
           conda-build-path: conda_recipe
+
+          conda-build-args: "--croot=/tmp/pkgs"
           
           # Make sure to store this token in your GitHub Secrets!
           anaconda-org-token: ${{ secrets.ANACONDA_API_TOKEN }}
