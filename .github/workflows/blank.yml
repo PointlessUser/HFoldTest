@@ -39,7 +39,11 @@ jobs:
 
       - name: Build Conda Package
         shell: bash
+        env:
+          # Pass the GitHub release tag to environment variable
+          GITHUB_REF_NAME: ${{ github.event.release.tag_name }}
         run: |
+          echo "Release tag is: $GITHUB_REF_NAME"
           # If conda_subdir is set (non-empty), configure subdir
           if [[ -n "${{ matrix.conda_subdir }}" ]]; then
             conda config --env --set subdir "${{ matrix.conda_subdir }}"
