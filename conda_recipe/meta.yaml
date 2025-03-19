@@ -7,7 +7,7 @@ package:
 
 source:
   # path: ..
-  git_url: https://github.com/HosnaJabbari/HFold.git
+  git_url: https://github.com/HosnaJabbari/HFoldTest.git
   git_rev: "{{ raw_tag }}"
 
 build:
@@ -29,13 +29,13 @@ requirements:
     - libcxx          # [osx]
 
 about:
-  home: https://github.com/HosnaJabbari/HFold
+  home: https://github.com/HosnaJabbari/HFoldTest
   license: "MIT"
   license_file: LICENSE
   summary: "HFold is an algorithm for predicting pseudoknotted secondary structures of RNA using strict Hierarchical Folding."
   description: |
     HFold predicts RNA secondary structure using a hierarchical folding approach.
-  dev_url: https://github.com/HosnaJabbari/HFold
+  dev_url: https://github.com/HosnaJabbari/HFoldTest
 
 extra:
   recipe-maintainers:
