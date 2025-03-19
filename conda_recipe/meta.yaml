@@ -23,7 +23,6 @@ requirements:
   host:
     - libstdcxx-ng    # [linux]
     - libcxx          # [osx]
-    - python >=3.6,<3.9
   run:
     - libstdcxx-ng    # [linux]
     - libcxx          # [osx]
