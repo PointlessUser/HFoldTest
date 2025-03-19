@@ -16,8 +16,6 @@ jobs:
             subdir: osx-arm64
           - os: macos-13
             subdir: osx-64
-          - os: windows-latest
-            subdir: win-64
 
     steps:
       - name: Checkout code
