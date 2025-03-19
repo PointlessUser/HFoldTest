@@ -14,8 +14,10 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - make
     - cmake >=3.1
+    - make  # [not win]
+    - ninja  # Optional on Windows, can be used instead of NMake
+    
   host:
     - libstdcxx-ng    # [linux]
     - libcxx          # [osx]
