@@ -45,7 +45,6 @@ jobs:
         env:
           CONDA_BLD_PATH: /home/runner/conda-bld  # Set outside the project
         run: |
-          mkdir -p "$CONDA_BLD_PATH"
           conda build . --croot "$CONDA_BLD_PATH.
 
       - name: Upload Package to Anaconda
