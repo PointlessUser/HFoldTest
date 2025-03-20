@@ -53,4 +53,4 @@ jobs:
           built_pkg=$(conda build . --output)
           echo "Built package: $built_pkg"
           conda run -n base anaconda -t "$ANACONDA_API_TOKEN" upload \
-            --user COBRALab --label main --force "$built_pkg"
+            --user yaalshama --label main --force "$built_pkg"
