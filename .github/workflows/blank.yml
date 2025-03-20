@@ -22,7 +22,7 @@ jobs:
           miniconda-version: latest
           channels: conda-forge,defaults
           channel-priority: strict
-          architecture: ${{ runner.os == 'macOS' && 'arm64' || 'x64' }}  # Crucial!
+          architecture: ${{ runner.arch == 'ARM64' && 'arm64' || 'x64' }}
 
       - name: Install conda-build & anaconda-client
         run: |
