@@ -50,4 +50,4 @@ jobs:
         run: |
           # Upload all converted *.tar.bz2 packages
           conda run -n base anaconda -t "$ANACONDA_API_TOKEN" upload \
-            --user COBRALab --label main --force converted_pkgs/*/*.tar.bz2
+            --user yaalshama --label main --force converted_pkgs/*/*.tar.bz2
