@@ -23,7 +23,6 @@ jobs:
           channels: conda-forge,defaults
           channel-priority: strict
           architecture: ${{ runner.arch == 'ARM64' && 'arm64' || 'x64' }}
-          miniconda-prefix: /home/runner/miniconda3
 
       - name: Install conda-build & anaconda-client
         run: |
@@ -43,8 +42,11 @@ jobs:
 
 
       - name: Build Conda Package
+        env:
+          CONDA_BLD_PATH: /home/runner/conda-bld  # Set outside the project
         run: |
-          conda build .
+          mkdir -p "$CONDA_BLD_PATH"
+          conda build . --croot "$CONDA_BLD_PATH.
 
       - name: Upload Package to Anaconda
         if: success()  # or only if build is successful
