@@ -20,7 +20,7 @@ jobs:
           auto-update-conda: true
           auto-activate-base: false
           miniconda-version: latest
-          channels: conda-forge, defaults
+          channels: conda-forge
           channel-priority: strict
           architecture: ${{ runner.arch == 'ARM64' && 'arm64' || 'x64' }}
 
@@ -46,7 +46,7 @@ jobs:
           CONDA_BLD_PATH: /home/runner/conda-bld
         run: |
           mkdir -p "$CONDA_BLD_PATH"
-          conda build . --croot "$CONDA_BLD_PATH"
+          conda build . --croot "$CONDA_BLD_PATH" 
 
       - name: Upload Package to Anaconda
         if: success()  # or only if build is successful
