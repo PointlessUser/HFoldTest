@@ -20,8 +20,8 @@ jobs:
           auto-update-conda: true
           auto-activate-base: false
           miniconda-version: latest
-          channels: conda-forge,defaults
-          channel-priority: flexible
+          channels: conda-forge, defaults
+          channel-priority: strict
           architecture: ${{ runner.arch == 'ARM64' && 'arm64' || 'x64' }}
 
       - name: Install conda-build & anaconda-client
