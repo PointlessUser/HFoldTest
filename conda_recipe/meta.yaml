@@ -18,7 +18,7 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake >=3.1
     - make
-    - sysroot_linux-aarch64
+
     
   host:
     - libstdcxx-ng    # [linux]
@@ -26,7 +26,7 @@ requirements:
   run:
     - libstdcxx-ng    # [linux]
     - libcxx          # [osx]
-    
+
 about:
   home: https://github.com/HosnaJabbari/HFoldTest
   license: "MIT"
