@@ -42,13 +42,8 @@ jobs:
 
 
       - name: Build Conda Package
-        env:
-          CONDA_BLD_PATH: /home/runner/conda-bld
         run: |
-          mkdir -p "$CONDA_BLD_PATH"
-          conda config --set channel_priority flexible  # Relax channel priority
-          conda update --all -y
-          conda build . --croot "$CONDA_BLD_PATH" --override-channels -c conda-forge
+          conda build .
 
       - name: Upload Package to Anaconda
         if: success()  # or only if build is successful
@@ -56,7 +51,6 @@ jobs:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
         run: |
           built_pkg=$(conda build . --output)
-          built_pkg=$(conda build . --croot /home/runner/conda-bld --output)
           echo "Built package: $built_pkg"
           conda run -n base anaconda -t "$ANACONDA_API_TOKEN" upload \
             --user yaalshama --label main --force "$built_pkg"
