@@ -7,6 +7,9 @@ source:
   #git_url: https://github.com/HosnaJabbari/HFoldTest.git
   #git_rev: "{{ raw_tag }}"
 
+build:
+  prefix_length: 30
+
 requirements:
   build:
     - {{ compiler('c') }}
