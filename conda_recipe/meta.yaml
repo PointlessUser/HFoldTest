@@ -7,12 +7,6 @@ source:
   #git_url: https://github.com/HosnaJabbari/HFoldTest.git
   #git_rev: "{{ raw_tag }}"
 
-build:
-  number: 0
-  ignore_run_exports:
-    - python
-  missing_dso_whitelist:
-    - "*/libstdc++.so.*"  # Whitelist libstdc++
 requirements:
   build:
     - {{ compiler('c') }}
