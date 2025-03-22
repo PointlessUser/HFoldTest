@@ -51,6 +51,7 @@ jobs:
           conda update --all -y
           conda build . \
           --python 3.10  \
+          --no-build-id  \
           --croot /tmp/bld  \
           --override-channels -c conda-forge
 
