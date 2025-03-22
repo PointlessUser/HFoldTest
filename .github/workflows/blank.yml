@@ -43,14 +43,14 @@ jobs:
 
       - name: Build Conda Package
         env:
-          CONDA_BLD_PATH: /home/runner/conda-bld
+          CONDA_BLD_PATH: /tmp/bld
         run: |
           mkdir -p "$CONDA_BLD_PATH"
           conda config --set channel_priority flexible  # Relax channel priority
           conda update --all -y
           conda build . \
           --python 3.10  \
-          --croot /home/runner/conda-bld  \
+          --croot /tmp/bld  \
           --override-channels -c conda-forge
 
       - name: Upload Package to Anaconda
