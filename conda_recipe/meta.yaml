@@ -13,15 +13,15 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake >=3.1
     - make
-    - sysroot_linux-aarch64 2.17.*
+    - sysroot_linux-aarch64
 
   host:
-    - libgcc-ng >=14.2.0       # [linux]
-    - libstdcxx-ng >=14.2.0    # [linux]
+    - libgcc-ng       # [linux]
+    - libstdcxx-ng    # [linux]
     - libcxx          # [osx]
   run:
-    - libgcc-ng >=14.2.0      # [linux]
-    - libstdcxx-ng >=14.2.0    # [linux]
+    - libgcc-ng       # [linux]
+    - libstdcxx-ng    # [linux]
     - libcxx          # [osx]
 
 about:
