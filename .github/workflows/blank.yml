@@ -48,7 +48,10 @@ jobs:
           mkdir -p "$CONDA_BLD_PATH"
           conda config --set channel_priority flexible  # Relax channel priority
           conda update --all -y
-          conda build . --croot "$CONDA_BLD_PATH" --override-channels -c conda-forge
+          conda build . \
+          --python 3.10  \
+          --croot /home/runner/conda-bld  \
+          --override-channels -c conda-forge
 
       - name: Upload Package to Anaconda
         if: success()  # or only if build is successful
