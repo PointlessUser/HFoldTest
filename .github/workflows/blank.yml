@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04-arm]
+        os: [ubuntu-24.04-arm]
 
     steps:
       - uses: actions/checkout@v3
@@ -42,11 +42,8 @@ jobs:
 
 
       - name: Build Conda Package
-        env:
-          CONDA_BLD_PATH: /home/runner/conda-bld
         run: |
-          mkdir -p "$CONDA_BLD_PATH"
-          conda build . --croot "$CONDA_BLD_PATH"
+          conda build .
 
       - name: Upload Package to Anaconda
         if: success()  # or only if build is successful
