@@ -1,6 +1,6 @@
 package:
   name: hfold
-  version: "1.1.1"
+  version: "1.1.2"
 
 source:
   path: ..
@@ -13,7 +13,7 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake >=3.1
     - make
-    - sysroot_linux-aarch64
+    - sysroot_linux-aarch64 # [aarch64]
 
   host:
     - libgcc-ng       # [linux]
