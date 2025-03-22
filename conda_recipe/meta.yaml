@@ -11,14 +11,15 @@ build:
   number: 0
   ignore_run_exports:
     - python
-
+  missing_dso_whitelist:
+    - "*/libstdc++.so.*"  # Whitelist libstdc++
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake >=3.1
     - make
-    - sysroot_linux-aarch64
+    - sysroot_linux-aarch64 2.17.*
 
   host:
     - libgcc-ng >=14.2.0       # [linux]
