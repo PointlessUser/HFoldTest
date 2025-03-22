@@ -20,7 +20,6 @@ jobs:
           auto-update-conda: true
           auto-activate-base: false
           miniconda-version: latest
-          installer-directory: ../miniconda
           channels: conda-forge,defaults
           channel-priority: strict
           architecture: ${{ runner.arch == 'ARM64' && 'arm64' || 'x64' }}
@@ -43,8 +42,11 @@ jobs:
 
 
       - name: Build Conda Package
+        env:
+          CONDA_BLD_PATH: /home/runner/conda-bld
         run: |
-          conda build .
+          mkdir -p "$CONDA_BLD_PATH"
+          conda build . --croot "$CONDA_BLD_PATH"
 
       - name: Upload Package to Anaconda
         if: success()  # or only if build is successful
@@ -52,6 +54,7 @@ jobs:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
         run: |
           built_pkg=$(conda build . --output)
+          built_pkg=$(conda build . --croot /home/runner/conda-bld --output)
           echo "Built package: $built_pkg"
           conda run -n base anaconda -t "$ANACONDA_API_TOKEN" upload \
             --user yaalshama --label main --force "$built_pkg"
