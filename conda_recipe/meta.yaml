@@ -19,11 +19,12 @@ requirements:
     - cmake >=3.1
     - make
 
-    
   host:
+    - libgcc-ng       # [linux]
     - libstdcxx-ng    # [linux]
     - libcxx          # [osx]
   run:
+    - libgcc-ng       # [linux]
     - libstdcxx-ng    # [linux]
     - libcxx          # [osx]
 
