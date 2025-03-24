@@ -1,0 +1,2 @@
+python:
+  -  # empty disables python variant pinning
