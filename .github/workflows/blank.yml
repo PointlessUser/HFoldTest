@@ -51,7 +51,6 @@ jobs:
           conda config --set channel_priority flexible
           conda install -y python=3.10
           
-          conda update --all -y
           conda build . \
           --no-long-test-prefix \
           --prefix-length 80 \
