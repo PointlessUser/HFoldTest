@@ -49,6 +49,7 @@ jobs:
         run: |
           mkdir -p "$CONDA_BLD_PATH"
           conda install -y python=3.10
+          conda install ruamel.yaml
           
           conda build . \
           --no-long-test-prefix \
