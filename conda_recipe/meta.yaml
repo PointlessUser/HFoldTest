@@ -10,6 +10,8 @@ source:
 build:
   short_paths: True
   prefix_length: 80
+  ignore_run_exports:
+    - python
 
 requirements:
   build:
