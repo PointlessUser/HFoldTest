@@ -44,15 +44,17 @@ jobs:
 
       - name: Build Conda Package
         env:
+          CONDA_BLD_PATH: /tmp/bld
           CONDA_BUILD_SHORT_PATHS: 1
         run: |
+          mkdir -p "$CONDA_BLD_PATH"
           conda install -y python=3.10
           
           conda build . \
           --no-long-test-prefix \
           --prefix-length 80 \
-          --python 3.10 \
           --no-build-id  \
+          --croot /tmp/bld  \
           --override-channels -c conda-forge
 
       - name: Upload Package to Anaconda
@@ -61,6 +63,7 @@ jobs:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
         run: |
           built_pkg=$(conda build . --output)
+          built_pkg=$(conda build . --croot /tmp/bld --output)
           echo "Built package: $built_pkg"
           conda run -n base anaconda -t "$ANACONDA_API_TOKEN" upload \
             --user yaalshama --label main --force "$built_pkg"
