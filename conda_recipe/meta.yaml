@@ -19,11 +19,9 @@ requirements:
     - make
 
   host:
-    - libgcc-ng       # [linux]
     - libstdcxx-ng    # [linux]
     - libcxx          # [osx]
   run:
-    - libgcc-ng       # [linux]
     - libstdcxx-ng    # [linux]
     - libcxx          # [osx]
 
