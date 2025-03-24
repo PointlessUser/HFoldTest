@@ -9,6 +9,7 @@ source:
 
 build:
   short_paths: True
+  prefix_length: 80
 
 requirements:
   build:
