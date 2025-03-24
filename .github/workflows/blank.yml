@@ -61,7 +61,7 @@ jobs:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
         run: |
           built_pkg=$(conda build . --output)
-          built_pkg=$(conda build . --croot /home/runner/conda-bld --output)
+          built_pkg=$(conda build . --croot /tmp/bld --output)
           echo "Built package: $built_pkg"
           conda run -n base anaconda -t "$ANACONDA_API_TOKEN" upload \
             --user yaalshama --label main --force "$built_pkg"
