@@ -26,11 +26,11 @@ jobs:
 
           # --- macOS Intel (already in your original) ---
           - os: macos-latest
-            conda_subdir: osx-64
+            conda_subdir: osx-arm64
 
           # --- macOS ARM (already in your original) ---
           - os: macos-13
-            conda_subdir: osx-arm64
+            conda_subdir: osx-64
 
     runs-on: ${{ matrix.os }}
 
