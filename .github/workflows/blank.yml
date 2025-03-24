@@ -6,33 +6,10 @@ on:
 
 jobs:
   build:
-    # We only truly have "ubuntu-latest" for x86_64 and "ubuntu-24.04-arm" for ARM.
-    # We will add a linux-32 build by setting the subdir to "linux-32".
-    # For macOS, we build both Intel and ARM as before.
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        include:
-          # --- Linux 64-bit (already in your original) ---
-          - os: ubuntu-latest
-            conda_subdir: linux-64
-
-          # --- Linux 32-bit (new entry) ---
-          - os: ubuntu-latest
-            conda_subdir: linux-32
-
-          # --- Linux ARM64 (already in your original) ---
-          - os: ubuntu-24.04-arm
-            conda_subdir: linux-aarch64
-
-          # --- macOS Intel (already in your original) ---
-          - os: macos-latest
-            conda_subdir: osx-arm64
-
-          # --- macOS ARM (already in your original) ---
-          - os: macos-13
-            conda_subdir: osx-64
-
-    runs-on: ${{ matrix.os }}
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-13]
 
     steps:
       - uses: actions/checkout@v3
@@ -45,11 +22,7 @@ jobs:
           miniconda-version: latest
           channels: conda-forge, defaults
           channel-priority: strict
-          python-version: "3.7"
           architecture: ${{ runner.arch == 'ARM64' && 'arm64' || 'x64' }}
-
-      - name: Configure subdir (linux-32, linux-64, etc.)
-        run: conda config --env --set subdir ${{ matrix.conda_subdir }}
 
       - name: Install conda-build & anaconda-client
         run: |
@@ -67,16 +40,18 @@ jobs:
             conda install -y conda-build anaconda-client
           fi
 
+
       - name: Build Conda Package
         env:
           CONDA_BLD_PATH: /tmp/bld
         run: |
-          conda install -y python=3.7
           mkdir -p "$CONDA_BLD_PATH"
-          conda build ./conda_recipe --croot /tmp/bld 
+          
+          conda build ./conda_recipe \
+          --croot /tmp/bld 
 
       - name: Upload Package to Anaconda
-        if: success()
+        if: success()  # or only if build is successful
         env:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
         run: |
