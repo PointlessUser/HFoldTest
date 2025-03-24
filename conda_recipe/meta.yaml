@@ -8,7 +8,7 @@ source:
   #git_rev: "{{ raw_tag }}"
 
 build:
-  prefix_length: 30
+  short_paths: True
 
 requirements:
   build:
