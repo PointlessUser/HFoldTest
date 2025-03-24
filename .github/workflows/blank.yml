@@ -20,7 +20,7 @@ jobs:
           auto-update-conda: true
           auto-activate-base: false
           miniconda-version: latest
-          channels: conda-forge
+          channels: conda-forge, defaults
           channel-priority: strict
           architecture: ${{ runner.arch == 'ARM64' && 'arm64' || 'x64' }}
 
@@ -44,16 +44,11 @@ jobs:
       - name: Build Conda Package
         env:
           CONDA_BLD_PATH: /tmp/bld
-          CONDA_BUILD_SHORT_PATHS: 1
         run: |
           mkdir -p "$CONDA_BLD_PATH"
           
           conda build ./conda_recipe \
-          --no-long-test-prefix \
-          --prefix-length 80 \
-          --no-build-id  \
-          --croot /tmp/bld  \
-          --override-channels -c conda-forge
+          --croot /tmp/bld 
 
       - name: Upload Package to Anaconda
         if: success()  # or only if build is successful
