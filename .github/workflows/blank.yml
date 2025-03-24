@@ -50,7 +50,6 @@ jobs:
           conda config --set channel_priority flexible  # Relax channel priority
           conda update --all -y
           conda build . \
-          --python 3.10  \
           --no-long-test-prefix \
           --no-build-id  \
           --croot /tmp/bld  \
