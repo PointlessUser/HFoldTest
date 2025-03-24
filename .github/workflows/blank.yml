@@ -48,8 +48,7 @@ jobs:
           CONDA_BUILD_SHORT_PATHS: 1
         run: |
           mkdir -p "$CONDA_BLD_PATH"
-          # Update conda + pin Python=3.10 in base, to avoid pulling Python 3.12
-          conda update --all -y
+          conda config --set channel_priority flexible
           conda install -y python=3.10
           
           conda update --all -y
