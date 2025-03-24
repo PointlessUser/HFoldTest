@@ -45,8 +45,7 @@ jobs:
           miniconda-version: latest
           channels: conda-forge, defaults
           channel-priority: strict
-          # This original logic only covers ARM vs x86_64, so for cross-compiling 32-bit,
-          # simply keep it as 'x64' since the runner is still 64-bit. 
+          python-version: "3.7"
           architecture: ${{ runner.arch == 'ARM64' && 'arm64' || 'x64' }}
 
       - name: Configure subdir (linux-32, linux-64, etc.)
@@ -72,8 +71,8 @@ jobs:
         env:
           CONDA_BLD_PATH: /tmp/bld
         run: |
+          conda install -y python=3.7
           mkdir -p "$CONDA_BLD_PATH"
-          # --croot is set to /tmp/bld, but we have told conda to use subdir = ${{ matrix.conda_subdir }}
           conda build ./conda_recipe --croot /tmp/bld 
 
       - name: Upload Package to Anaconda
