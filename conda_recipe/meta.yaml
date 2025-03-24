@@ -10,7 +10,7 @@ source:
 build:
   short_paths: True
   prefix_length: 80
-  skip: True  # [py*]
+  skip: True  # [python]
   ignore_run_exports:
     - python
 
