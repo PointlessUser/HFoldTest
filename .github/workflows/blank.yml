@@ -51,6 +51,7 @@ jobs:
           conda update --all -y
           conda build . \
           --no-long-test-prefix \
+          --prefix-length 80 \
           --no-build-id  \
           --croot /tmp/bld  \
           --override-channels -c conda-forge
